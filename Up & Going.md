@@ -134,5 +134,217 @@ Note: As I said in Chapter 1, you should definitely try all this code yourself a
 
 小贴士：正如我在第一章中所说的，你应该在阅读本章和工作的过程中确切的自己尝试所有代码。需要注意的是这里的部分代码假定了在撰写本文时在JavaScript最新版本中介绍了的功能已经可以使用（通常被称作“ES6”作为ECMAScript的第六版－－JS规范的官方命名）。如果你碰巧在使用一个老版本的、ES6之前的浏览器，这些代码可能不能正常工作。最近更新的现代浏览器（比如Chrome，Firefox，IE）应该是可以使用的。
 
+####Values & Types
 
+As we asserted in Chapter 1, JavaScript has typed values, not typed variables. The following built-in types are available:
 
+正如我们在第一章中所断言的，JavaScript具有规定类型的值，而不是具有规定类型的变量。［就是值是有类型的，变量没有类型之分］下列内置类型是可用的：
+
+* `string`
+* `number`
+* `boolean`
+* `null` and `undefined`
+* `object`
+* `symbol` (ES6新加的)
+
+JavaScript provides a `typeof` operator that can examine a value and tell you what type it is:
+
+JavaScript提供了一个typeof运算符可以用来检测一个值并告知你它的类型是什么：
+
+```js
+var a;
+typeof a;				// "undefined"
+
+a = "hello world";
+typeof a;				// "string"
+
+a = 42;
+typeof a;				// "number"
+
+a = true;
+typeof a;				// "boolean"
+
+a = null;
+typeof a;				// "object" -- weird, bug
+
+a = undefined;
+typeof a;				// "undefined"
+
+a = { b: "c" };
+typeof a;				// "object"
+```
+The return value from the `typeof` operator is always one of six (seven as of ES6! - the "symbol" type) string values. That is, `typeof "abc"` returns `"string"`, not `string`.
+
+typeof运算符的返回值总是六个字符串值中的一个（ES6中是7个！－"Symnol"类型）。也就是说，typeof "abc"返回的是"String"，而不是String。 
+
+Notice how in this snippet the `a` variable holds every different type of value, and that despite appearances, `typeof a` is not asking for the "type of `a`", but rather for the "type of the value currently in `a`." Only values have types in JavaScript; variables are just simple containers for those values.
+
+留意下在这个代码片段中a这个变量是如何保存各种不同类型的值，尽管它以多种不同的形式出现。typeof a不是用来查询a的类型，而是只是查询a这个变量中临时保存的值的类型。在JavaScript中只有值具有类型；变量只是那些值的简单的容器而已。
+
+`typeof null` is an interesting case, because it errantly returns `"object"`, when you'd expect it to return `"null"`.
+
+typeof null是一个有趣的例子，因为它竟然返回的是"Object",你可能期望它返回"null"。
+
+**Warning:** This is a long-standing bug in JS, but one that is likely never going to be fixed. Too much code on the Web relies on the bug and thus fixing it would cause a lot more bugs!
+
+警告：这是JS中一个存在已久的bug，不过它可能永远也不会被修复。网站上太多的代码依赖这个bug因此修复它会造成更多的bug。
+
+Also, note `a = undefined`. We're explicitly setting `a` to the `undefined` value, but that is behaviorally no different from a variable that has no value set yet, like with the `var a;` line at the top of the snippet. A variable can get to this "undefined" value state in several different ways, including functions that return no values and usage of the `void` operator.
+
+另外，注意下a = undefined，我们明确地设置a的值为'undefined'，但是它表现得跟一个还没有设置值的变量是一样的，比如在代码片段的头部用var a。一个变量可以获得这个"undefined"的值有多种不同的办法，包括不返回值的方法和使用void运算符。
+
+####Objects
+
+The `object` type refers to a compound value where you can set properties (named locations) that each hold their own values of any type. This is perhaps one of the most useful value types in all of JavaScript.
+
+对象类型指的是一个复合值，你可以设置它的属性（命名位置），每个属性都有它们自己的任何类型的值。这可能是在JavaScript中最有用的值类型之一。
+
+```js
+var obj = {
+	a: "hello world",
+	b: 42,
+	c: true
+};
+
+obj.a;		// "hello world"
+obj.b;		// 42
+obj.c;		// true
+
+obj["a"];	// "hello world"
+obj["b"];	// 42
+obj["c"];	// true
+```
+
+It may be helpful to think of this `obj` value visually:
+
+可视化的方式来看obj可能更加直观一些：
+
+<img src="fig4.png">
+
+Properties can either be accessed with *dot notation* (i.e., `obj.a`) or *bracket notation* (i.e., `obj["a"]`). Dot notation is shorter and generally easier to read, and is thus preferred when possible.
+
+属性可以通过点标记和括号标记访问。点标记更短小精悍一些而且通常更容易阅读一些，因此可以的话会倾向于使用点标记。
+
+Bracket notation is useful if you have a property name that has special characters in it, like `obj["hello world!"]` -- such properties are often referred to as *keys* when accessed via bracket notation. The `[ ]` notation requires either a variable (explained next) or a `string` *literal* (which needs to be wrapped in `" .. "` or `' .. '`).
+
+括号标记在你有一个属性名包含特殊符号的情况下比较有用，比如`obj["hello world!"]` －－当通过括号访问时，这些属性通常被称作键。括号标记需要一个变量（之后解释）或者一个字符串字面量（需要被写在引号中）。
+
+Of course, bracket notation is also useful if you want to access a property/key but the name is stored in another variable, such as:
+
+当然，括号标记在如果你想访问一个属性/键但是名字在其他变量中被占用了的时候也是很有用的，比如：
+
+```js
+var obj = {
+	a: "hello world",
+	b: 42
+};
+
+var b = "a";
+
+obj[b];			// "hello world"
+obj["b"];		// 42
+```
+
+**Note:** For more information on JavaScript `object`s, see the *this & Object Prototypes* title of this series, specifically Chapter 3.
+
+注意：想要更多的JavaScript的对象的信息，看这一系列的this & ObjectPrototypes，具体看第三章。
+
+There are a couple of other value types that you will commonly interact with in JavaScript programs: *array* and *function*. But rather than being proper built-in types, these should be thought of more like subtypes -- specialized versions of the `object` type.
+
+还有一些其他的值类型你可能会在与JavaScript程序的交互过程中比较常用：数组和函数。但是与其说它们是独特的内置类型，不如它们更应该被想为子类型－－object类型的专门版本。
+
+##### Arrays
+
+An array is an `object` that holds values (of any type) not particularly in named properties/keys, but rather in numerically indexed positions. For example:
+
+一个数组是一个保存（任何类型）值的对象，它不是用属性/键命名，而是用数字索引位置。例如：
+
+```js
+var arr = [
+	"hello world",
+	42,
+	true
+];
+
+arr[0];			// "hello world"
+arr[1];			// 42
+arr[2];			// true
+arr.length;		// 3
+
+typeof arr;		// "object"
+```
+
+**Note:** Languages that start counting at zero, like JS does, use `0` as the index of the first element in the array.
+
+注意：数组的语法以0开始计数，就像JS做的那样，用0作为数组中的第一个元素的下标。
+
+It may be helpful to think of `arr` visually:
+
+可视化的方式来看arr可能更加直观一些：
+
+<img src="fig5.png">
+
+Because arrays are special objects (as `typeof` implies), they can also have properties, including the automatically updated `length` property.
+
+因为数组是特殊的对象（正如typeof运算符揭示的那样），它们也可以具有属性，包括自动更新的长度属性。
+
+You theoretically could use an array as a normal object with your own named properties, or you could use an `object` but only give it numeric properties (`0`, `1`, etc.) similar to an array. However, this would generally be considered improper usage of the respective types.
+
+理论上来说你可以将数组作为一个由你自己命名的属性名的对象使用，或者你可以在使用对象时只给数组数字属性来模拟数组。然而这种做法通常会被认为是对不同类型的不当使用。
+
+The best and most natural approach is to use arrays for numerically positioned values and use `object`s for named properties.
+
+最好的最自然的方法是使用数组来应用于数字标志的值，使用对象来应用于命名属性的情况。
+
+##### Functions
+
+The other `object` subtype you'll use all over your JS programs is a function:
+
+另一个对象的字类型是你会在所有JS程序中都会用到的函数：
+
+```js
+function foo() {
+	return 42;
+}
+
+foo.bar = "hello world";
+
+typeof foo;			// "function"
+typeof foo();		// "number"
+typeof foo.bar;		// "string"
+```
+
+Again, functions are a subtype of `objects` -- `typeof` returns `"function"`, which implies that a `function` is a main type -- and can thus have properties, but you typically will only use function object properties (like `foo.bar`) in limited cases.
+
+再强调下，函数是对象的子类型－－typeof运算符返回的是"function"，这一现象揭示出函数是一个主要类型－－因此它有属性，但是一般只会在很少的用例中使用到对象的属性（比如foo.bar）。
+
+**Note:** For more information on JS values and their types, see the first two chapters of the *Types & Grammar* title of this series.
+
+注意：想要更多的JS值和类型的额信息，看下这个系列中Types & Grammar前两章的内容。
+
+#### Built-In Type Methods
+
+The built-in types and subtypes we've just discussed have behaviors exposed as properties and methods that are quite powerful and useful.
+
+我们之前讨论的内置类型和子类型暴露出来一些相当强大和有用属性和方法。
+
+For example:
+
+```js
+var a = "hello world";
+var b = 3.14159;
+
+a.length;				// 11
+a.toUpperCase();		// "HELLO WORLD"
+b.toFixed(4);			// "3.1416"
+```
+
+The "how" behind being able to call `a.toUpperCase()` is more complicated than just that method existing on the value.
+
+Briefly, there is a `String` (capital `S`) object wrapper form, typically called a "native," that pairs with the primitive `string` type; it's this object wrapper that defines the `toUpperCase()` method on its prototype.
+
+When you use a primitive value like `"hello world"` as an `object` by referencing a property or method (e.g., `a.toUpperCase()` in the previous snippet), JS automatically "boxes" the value to its object wrapper counterpart (hidden under the covers).
+
+A `string` value can be wrapped by a `String` object, a `number` can be wrapped by a `Number` object, and a `boolean` can be wrapped by a `Boolean` object. For the most part, you don't need to worry about or directly use these object wrapper forms of the values -- prefer the primitive value forms in practically all cases and JavaScript will take care of the rest for you.
+
+**Note:** For more information on JS natives and "boxing," see Chapter 3 of the *Types & Grammar* title of this series. To better understand the prototype of an object, see Chapter 5 of the *this & Object Prototypes* title of this series.
