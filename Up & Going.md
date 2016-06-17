@@ -134,3 +134,5 @@ Note: As I said in Chapter 1, you should definitely try all this code yourself a
 
 小贴士：正如我在第一章中所说的，你应该在阅读本章和工作的过程中确切的自己尝试所有代码。需要注意的是这里的部分代码假定了在撰写本文时在JavaScript最新版本中介绍了的功能已经可以使用（通常被称作“ES6”作为ECMAScript的第六版－－JS规范的官方命名）。如果你碰巧在使用一个老版本的、ES6之前的浏览器，这些代码可能不能正常工作。最近更新的现代浏览器（比如Chrome，Firefox，IE）应该是可以使用的。
 
+
+
