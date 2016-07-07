@@ -187,7 +187,7 @@ The best and most natural approach is to use arrays for numerically positioned v
 
 The other `object` subtype you'll use all over your JS programs is a function:
 
-另一个对象的字类型是你会在所有JS程序中都会用到的函数：
+另一个对象的子类型是你会在所有JS程序中都会用到的函数：
 
 ```js
 function foo() {
@@ -203,7 +203,7 @@ typeof foo.bar;		// "string"
 
 Again, functions are a subtype of `objects` -- `typeof` returns `"function"`, which implies that a `function` is a main type -- and can thus have properties, but you typically will only use function object properties (like `foo.bar`) in limited cases.
 
-再强调下，函数是对象的子类型－－typeof运算符返回的是"function"，这一现象揭示出函数是一个主要类型－－因此它有属性，但是一般只会在很少的用例中使用到对象的属性（比如foo.bar）。
+再强调一遍，函数十对象的子类型－－`typeof`返回的是`"function"`，也就是说函数是一种主要类型，也因此具有属性，不过你基本只会在限定的一种场景中使用对象属性（比如`foo.bar`）。
 
 **Note:** For more information on JS values and their types, see the first two chapters of the *Types & Grammar* title of this series.
 
@@ -330,11 +330,15 @@ It's important to remember that a non-`boolean` value only follows this "truthy"
 
 There are four equality operators: `==`, `===`, `!=`, and `!==`. The `!` forms are of course the symmetric "not equal" versions of their counterparts; *non-equality* should not be confused with *inequality*.
 
-JS中有四种等于操作符`==`，`===`，`!=`和`!==`。`!`形式是
+JS中有四种等于操作符`==`，`===`，`!=`和`!==`。`!`形式当然是其它操作符的相对应的不等于版本；*不平等*不应该与*不等式*相混淆。
 
 The difference between `==` and `===` is usually characterized that `==` checks for value equality and `===` checks for both value and type equality. However, this is inaccurate. The proper way to characterize them is that `==` checks for value equality with coercion allowed, and `===` checks for value equality without allowing coercion; `===` is often called "strict equality" for this reason.
 
+`==`和`===`的区别通常是其特征表现在`==`检查的是值的相等性而`===`检查的是值和类型都相等性。然而，这是不准确的。更好的检查它们的方式是`==`用来检查允许类型转换的值的相等性，而`===`用来检查不允许类型转换的值的相等性；`===`通常称作“强制相等也是这个原因”。
+
 Consider the implicit coercion that's allowed by the `==` loose-equality comparison and not allowed with the `===` strict-equality:
+
+考虑到隐式类型转换，是允许`==`松散的相等性比较的，不允许使用`===`严格的相等性比较。
 
 ```js
 var a = "42";
@@ -346,13 +350,23 @@ a === b;		// false
 
 In the `a == b` comparison, JS notices that the types do not match, so it goes through an ordered series of steps to coerce one or both values to a different type until the types match, where then a simple value equality can be checked.
 
+在`a == b`的比较中，JS注意到类型不匹配，所以它通过规定的一系列步骤来将一个或全部的值转换成不同的类型直到它们的类型相匹配，然后就可以进行简单的值的相等性的检查。
+
 If you think about it, there's two possible ways `a == b` could give `true` via coercion. Either the comparison could end up as `42 == 42` or it could be `"42" == "42"`. So which is it?
+
+如果你仔细考虑下这个问题，就会发现通过类型转换`a == b`有两种可能的方法来返回 `true`。最终可以作为`42 == 42`或者`"42" == "42"`来进行比较。那到底是哪一种呢？
 
 The answer: `"42"` becomes `42`, to make the comparison `42 == 42`. In such a simple example, it doesn't really seem to matter which way that process goes, as the end result is the same. There are more complex cases where it matters not just what the end result of the comparison is, but *how* you get there.
 
+答案是`"42"`转换成`42`来完成`42 == 42`的比较。在这个简单的例子中，它最后的结果是相同的，是哪种方式实现的也就似乎不太重要了。不过还有更复杂的例子重要的不仅仅是最后的比较结果，而是*如何*得到这个结果的。
+
 The `a === b` produces `false`, because the coercion is not allowed, so the simple value comparison obviously fails. Many developers feel that `===` is more predictable, so they advocate always using that form and staying away from `==`. I think this view is very shortsighted. I believe `==` is a powerful tool that helps your program, *if you take the time to learn how it works.*
 
+`a === b`的结果是`false`，因为不允许类型转换，所以简单的值比较明显的失败了。很多开发者觉得`===`是更可预测的，所以他们主张使用这种方式而尽量不使用`==`的形式。我认为这种观点是非常短视的。*如果你花时间去了解它的工作原理，*我相信`==`是一个可以帮助你的程序的强力的工具。
+
 We're not going to cover all the nitty-gritty details of how the coercion in `==` comparisons works here. Much of it is pretty sensible, but there are some important corner cases to be careful of. You can read section 11.9.3 of the ES5 specification (http://www.ecma-international.org/ecma-262/5.1/) to see the exact rules, and you'll be surprised at just how straightforward this mechanism is, compared to all the negative hype surrounding it.
+
+我们不可能覆盖所有的类型转换如何在`==`比较中工作的细节，大部分是相当合理的，但是有一些部分重要的不容易引起重视的例子应当小心。
 
 To boil down a whole lot of details to a few simple takeaways, and help you know whether to use `==` or `===` in various situations, here are my simple rules:
 
