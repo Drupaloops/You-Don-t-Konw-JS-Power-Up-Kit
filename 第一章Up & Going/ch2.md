@@ -366,13 +366,18 @@ The `a === b` produces `false`, because the coercion is not allowed, so the simp
 
 We're not going to cover all the nitty-gritty details of how the coercion in `==` comparisons works here. Much of it is pretty sensible, but there are some important corner cases to be careful of. You can read section 11.9.3 of the ES5 specification (http://www.ecma-international.org/ecma-262/5.1/) to see the exact rules, and you'll be surprised at just how straightforward this mechanism is, compared to all the negative hype surrounding it.
 
-我们不可能覆盖所有的类型转换如何在`==`比较中工作的细节，大部分是相当合理的，但是有一些部分重要的不容易引起重视的例子应当小心。
+我们不可能覆盖所有的类型转换如何在`==`比较中工作的细节，大部分是相当合理的，但是有一些部分重要的不容易引起重视的例子应当小心。你可以阅读ES5详解的11.9.3部分(http://www.ecma-international.org/ecma-262/5.1/)来了解其他的准确的规则，而且相比于围绕它的消极的宣传你会惊讶于它的这种机制是多么的简单明确。
 
 To boil down a whole lot of details to a few simple takeaways, and help you know whether to use `==` or `===` in various situations, here are my simple rules:
+
+将这么多的细节总结成简单几点，帮助你了解在多种情况下是使用`==`还是`===`，接下来是我的几点简单的规则： 
 
 * If either value (aka side) in a comparison could be the `true` or `false` value, avoid `==` and use `===`.
 * If either value in a comparison could be of these specific values (`0`, `""`, or `[]` -- empty array), avoid `==` and use `===`.
 * In *all* other cases, you're safe to use `==`. Not only is it safe, but in many cases it simplifies your code in a way that improves readability.
+
+* 如果比较的两个值（也叫作边）中任意一个的值可能是`true`或者`false`，禁止使用`==`应该使用`===`。
+* 如果
 
 What these rules boil down to is requiring you to think critically about your code and about what kinds of values can come through variables that get compared for equality. If you can be certain about the values, and `==` is safe, use it! If you can't be certain about the values, use `===`. It's that simple.
 
