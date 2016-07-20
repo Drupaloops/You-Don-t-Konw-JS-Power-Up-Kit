@@ -377,7 +377,7 @@ To boil down a whole lot of details to a few simple takeaways, and help you know
 * In *all* other cases, you're safe to use `==`. Not only is it safe, but in many cases it simplifies your code in a way that improves readability.
 
 * 如果比较的两个值（也叫作边）中任意一个的值可能是`true`或者`false`，禁止使用`==`应该使用`===`。
-* 如果
+* 如果比较的两个值中的任意一个可能是这些特殊的值（`0`，`""`，或者`[]`——空数组），禁止使用`==`应该使用`===`。
 
 What these rules boil down to is requiring you to think critically about your code and about what kinds of values can come through variables that get compared for equality. If you can be certain about the values, and `==` is safe, use it! If you can't be certain about the values, use `===`. It's that simple.
 
